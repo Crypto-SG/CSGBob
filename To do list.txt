@@ -1,19 +1,13 @@
-To do list
+# To do list
 
-- add confirmation prompt (yes, no do you want to bob)
-
-- delete old /bob message after bob is completed and all of the user's past messages.
-
+## Bob related
+- add confirmation prompt before you bob is invoked?
+- Ban user first then delete all of the user's past messages.
 - /bob to work only if it's at the start of a message.
-
-- clean up butler msg. (split into separate module)
-
-- another spec for butler enhancement is keyword parameter ban. if whatever keyword set by admin (e.g. "sginternship" etc etc) has been found, immediate ban and report as spam (if possible). think that would be useful if able to implement
-
-- whenever a user is manually banned by any admins, to send a message to the group / channel. 
-
+- whenever a user is manually banned by any admins, to send a message to the group / channel.
 - can't vote unless you joined the channel
+- when user gets bobbed, remove the "/bob" msg and send a new message reference the telegram link instead of quoting the msg + the number of kicks.
 
-- the bob vote msg would have been replaced with the bob resolution vote outcome msg
-
-- bob should ban first then delete all messages.
+## Butler related
+- clean up butler msg. (split into separate module)
+- another spec for butler enhancement is keyword parameter ban. if whatever keyword set by admin (e.g. "sginternship" etc etc) has been found, immediate ban and report as spam (if possible). think that would be useful if able to implement

@@ -1,11 +1,12 @@
 # To do list
 
 ## Bob related
-- add confirmation prompt before you bob is invoked?
+- add confirmation prompt before you bob is invoked so that people dont anyhow click /bob and accidentally bob someone
 - Ban user first then delete all of the user's past messages.
 - /bob to work only if it's at the start of a message.
 - whenever a user is manually banned by any admins, to send a message to the group / channel.
-- can't vote unless you joined the channel
+- can't vote unless you joined the channel and only if you pass certain conditions
+- able to bob with telegram handle, can handle multiple telegram handles at one go e.g. /bob @a @b @c
 - when user gets bobbed, remove the "/bob" msg and send a new message reference the telegram link instead of quoting the msg + the number of kicks.
 
 ## Butler related

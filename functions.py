@@ -3,22 +3,40 @@ from threading import Thread
 import time
 from random import randint
 import datetime
-
+import json
+import requests
 # Config variables
 voteLimit = 8
 banLimit = 8
 timeOfBans = list()
-easteregg_list=[]
+easteregg_list=['-1001375339070','-1001228209853','-1001123530370','-1001097080601']
 hammer_repo=['https://thumbs.gfycat.com/DenseMatureBuckeyebutterfly-small.gif','https://thumbs.gfycat.com/GaseousHandyAmericanbadger-small.gif','https://thumbs.gfycat.com/AssuredActualCranefly-small.gif','https://gfycat.com/sizzlingindeliblegodwit-small.gif,https://gfycat.com/naughtyadorabledairycow-small.gif','https://gfycat.com/mintysnarlingargusfish-small.gif']
 bob_repo=['https://thumbs.gfycat.com/WebbedSpicyGreathornedowl-small.gif','https://thumbs.gfycat.com/FatherlyWearyBlackfootedferret-small.gif']
-# channelHandle = "@CryptoSG"
-channelHandle = "@CSGAdmin"
+channelHandle = "@CryptoSG"
+# channelHandle = "https://t.me/joinchat/DAA6s1E-70Wdz_BYMotLwA"
 # channelHandle = "@CryptoSGSpam"
 admins = dict()
 pending = dict()
 
+def getReinhardt():
+    try:
+        url='https://api.gfycat.com/v1/gfycats/search?search_text=reinhardt&count=1000'
+        print(f'Getting {url}')
+        response=requests.get(url)
+        print(f'response: {response.status_code}')
+        if response.status_code==200:
+            gifurl=response.json()['gfycats'][randint(1,999)]['content_urls']['max5mbGif']['url']
+            print(f'returning {gifurl}')
+            return gifurl
+        else:
+            print('Response code error')
+            return 'https://thumbs.gfycat.com/DenseMatureBuckeyebutterfly-small.gif'
+    except Exception as e:
+        print(f'getReinhardt exception {e}')
+        return 'https://thumbs.gfycat.com/DenseMatureBuckeyebutterfly-small.gif'
+
 def delayedDel(bot, chat_id,message_id):
-    time.sleep(15)
+    time.sleep(60*5)
     bot.delete_message(chat_id, message_id)
     
 def sendEasterEgg(bot, image_url,chat_id):#, reply_id):
@@ -88,8 +106,10 @@ def processCallback(bot, update):
             pass
         del pending[id]
         timeOfBans.append(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-        if str(chatId) in easteregg_list:
-            sendEasterEgg(bot, hammer_repo[randint(0,len(hammer_repo)-1)], chatId)
+#         if str(chatId) in easteregg_list:
+#             sendEasterEgg(bot, hammer_repo[randint(0,len(hammer_repo)-1)], chatId)
+#             sendEasterEgg(bot, getReinhardt(), chatId)
+
 
     elif numNo >= voteLimit:
         text = "The community has decided that " + details['name'] + " should not be banned. The following users voted no: " + voterNames
@@ -119,6 +139,7 @@ def getAdmins(bot, update):
             print("Error retriving admin details, please see getAdmin function.")
         else:
             admins[id] = name
+    print(admins)
 
 # Inner function to check if id is an admin
 def adminOnly(id):
@@ -131,7 +152,7 @@ def adminOnly(id):
 # Public function to get more details about the bot
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id,
-                     text="This bot is created by @itsmest for the group " + 
+                     text="This bot is created by @itsmestyj for the group " + 
                      "@CryptoSG. If you wish to use this bot, please pm me or @milodino.")
 
 # Admin only function to set the limit for the number of votes required to ban
@@ -176,6 +197,7 @@ def getTimeOfBans(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=text)
     else:
         bot.send_message(chat_id=update.message.chat_id, text="Only admins of @CryptoSG can call this function.")
+
 
 # Inner function to remove old bans after 24 hours has passed
 def rollingBanLimitLogic(bot, update):
@@ -290,7 +312,16 @@ def getPending(bot, update):
     else:
         bot.send_message(chat_id=update.message.chat_id, text="Only admins of @CryptoSG can call this function.")
 
-
+# Admin only function to reset the ban limit
+def resetBanLimit(bot, update):
+	print('in resetBanLimit')
+#     global admins
+#     print(admins)
+	if adminOnly(update.message.from_user.id):
+		global timeOfBans
+		timeOfBans=[]
+		bot.send_message(chat_id=update.message.chat_id, text=f"Current number of bans {len(timeOfBans)}")    
+        
 def exit_handler():
     print()
     # https://www.pythonforbeginners.com/cheatsheet/python-file-handling
